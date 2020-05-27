@@ -2,19 +2,19 @@
 //#include "BLEScan.h"
 #include <odroid_go.h>
 
-static String BTPASSWD = "xxxxx";    //Das Bluetooth-Passwort, welches bei den Kommandos mitgesendet wird
-#define MyTier "xx:xx:xx:xx:xx:xx"        //Bluetooth-Adresse des Scooters, diese mit einem Bluetooth LE Scanner herausfinden und hier rein
+static String BTPASSWD = "xxxxxx";    //Das Bluetooth-Passwort, welches bei den Kommandos mitgesendet wird
+#define MyTier "XX:XX:XX:XX:XX:XX"        //Bluetooth-Adresse des Scooters, diese mit einem Bluetooth LE Scanner herausfinden und hier rein
 
 static BLEUUID serviceUUID("00002c00-0000-1000-8000-00805f9b34fb"); //Service des Tier-Scooters
 static BLEUUID    charUUID("00002c10-0000-1000-8000-00805f9b34fb"); //Charakteristik.. Hier landen die Befehle.
 
-static boolean LockStatus;
+static int LockStatus;
 static  float Speed;
 static  float TripDistance;
 static  float TripTotal;
 static  int OddCounter;
 static  int Battery;
-static  boolean Active;
+static  int Headlight;
 
 static boolean doConnect = false;
 static boolean connected = false;
@@ -34,22 +34,33 @@ static void notifyCallback( //Notifications vom Characteristic
     String cmd = (char*) pData;
     if(rcvStatus){ //Befehle wie AT+BKINF wird immer in 2 teilen empfangen. Ich will diesen damit abfangen, um alles zu empfangen. 
       lastStatus = lastStatus + (char*) pData; 
-      GO.lcd.println("teil2:["+lastStatus+"]");
       lastStatus.replace("+ACK:BKINF,","");
       lastStatus.replace("\r\n","");
       lastStatus.replace("$","");     //Müll entfernen
-      //+ACK:BKINF=LockStatus,Speed,TripDistance,TripTotal,OddCounter,Battery,Active$    
-//      sscanf(lastStatus.c_str(), "%b,%.1f,%.2f,%.1f,%d,$d,%b",&LockStatus,&Speed,&TripDistance,&TripTotal,&OddCounter,&Battery,&Active);  //irgendwie gehts noch nicht
-      GO.lcd.println("teil3:["+lastStatus+"]");
-
+      //+ACK:BKINF=LockStatus,Speed,TripDistance,TripTotal,OddCounter,Battery,Active$ 
+      int spdvk, spdnk, tripvk, tripnk, triptvk, triptnk; //float stinkt
+//      sscanf(lastStatus.c_str(), "%d,%.1f,%.2f,%.1f,%d,$d,%d",&LockStatus,&Speed,&TripDistance,&TripTotal,&OddCounter,&Battery,&Active);  //Geil: sscanf kann hier kein float.
+      sscanf(lastStatus.c_str(), "%d,%d.%d,%d.%d,%d.%d,%d,%d,%d",&LockStatus,&spdvk, &spdnk, &tripvk, &tripnk, &triptvk, &triptnk,&OddCounter,&Battery,&Headlight);
+      Speed = (float) spdvk + ((float) spdnk / 10); //20.1 kmh
+      TripDistance = (float) tripvk + ((float) tripnk / 100); //30.33 km distanz
+      TripTotal = (float) triptvk + ((float) triptnk / 10); //1666.6 km bisher
+      GO.lcd.clear();
+      GO.lcd.setCursor(0, 0);
+//      GO.lcd.println("["+lastStatus+"]");
+      GO.lcd.printf("Sperre: %s\n",(LockStatus) ? "Ein": "Aus" );
+      GO.lcd.printf("Tacho: %.1f km/h\n",Speed);
+      GO.lcd.printf("Trip: %.2f km\n",TripDistance);
+      GO.lcd.printf("Trip Gesamt: %.1f km\n",TripTotal);
+      GO.lcd.printf("Unbekannt: %d\n",OddCounter );
+      GO.lcd.printf("Batterie: %d %\n",Battery);
+      GO.lcd.printf("Frontleuchte: %s\n",(Headlight)? "Ein": "Aus");
       rcvStatus = false;
     }else{
       if(cmd.substring(5,10) == "BKINF"){
          lastStatus = (char*) pData;       
-         GO.lcd.clear();
-         GO.lcd.setCursor(0, 0);
-         GO.lcd.println("teil1:["+lastStatus+"]");
          rcvStatus = true;
+      }else{
+        GO.lcd.println("Empfangen: " + cmd);
       }
     }
 //    GO.lcd.println(rcvd.substring(5,10));
@@ -64,7 +75,9 @@ class MyClientCallback : public BLEClientCallbacks {
 
   void onDisconnect(BLEClient* pclient) {
     connected = false;
-    GO.lcd.println("Verbindung getrennt. Evtl ist bereits etwas mit dem Scooter verbunden. Resetten pls :D");
+    GO.lcd.println("Verbindung getrennt..");
+    delay(2000);
+    doConnect = true;
   }
 };
 
@@ -167,5 +180,5 @@ void loop() {
     pRemoteCharacteristic->writeValue(newValue1.c_str(), newValue1.length());
     pRemoteCharacteristic->writeValue(newValue2.c_str(), newValue2.length());
   }  
-  delay(750);
+  delay(500);
 } // End of loop
