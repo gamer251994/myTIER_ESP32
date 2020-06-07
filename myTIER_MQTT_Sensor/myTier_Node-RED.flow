@@ -1,0 +1,819 @@
+[
+    {
+        "id": "594cf65f.c9a988",
+        "type": "mqtt in",
+        "z": "c85f287f.57eba8",
+        "name": "",
+        "topic": "myTIER",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "d7a9433d.ac072",
+        "x": 109.00000762939453,
+        "y": 1864.0000247955322,
+        "wires": [
+            [
+                "af04ad84.ddf218"
+            ]
+        ]
+    },
+    {
+        "id": "af04ad84.ddf218",
+        "type": "json",
+        "z": "c85f287f.57eba8",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 331.50000762939453,
+        "y": 1864.0000247955322,
+        "wires": [
+            [
+                "9f24a76b.603ea8",
+                "ebfbd387.5674b"
+            ]
+        ]
+    },
+    {
+        "id": "4dfa69df.e93c48",
+        "type": "function",
+        "z": "c85f287f.57eba8",
+        "name": "SNR",
+        "func": "msg.payload = msg.payload.SNR\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 700.6000556945801,
+        "y": 1575.400047302246,
+        "wires": [
+            [
+                "2faff7ac.8761a8"
+            ]
+        ]
+    },
+    {
+        "id": "63813df3.968a54",
+        "type": "function",
+        "z": "c85f287f.57eba8",
+        "name": "Lock",
+        "func": "if (msg.payload.Lock == 1){\n    msg.payload = \"Locked\";\n}else{\n    msg.payload = \"Unlocked\";\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 702.0000076293945,
+        "y": 1614.3999996185303,
+        "wires": [
+            [
+                "c83c1326.08c0e"
+            ]
+        ]
+    },
+    {
+        "id": "b0369eda.c3fa8",
+        "type": "function",
+        "z": "c85f287f.57eba8",
+        "name": "Speed",
+        "func": "msg.payload = msg.payload.Speed\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 701.0000076293945,
+        "y": 1652.4000005722046,
+        "wires": [
+            [
+                "cd3070f3.ff8b1"
+            ]
+        ]
+    },
+    {
+        "id": "7872a65d.ac97f8",
+        "type": "function",
+        "z": "c85f287f.57eba8",
+        "name": "Trip",
+        "func": "msg.payload = msg.payload.Trip\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 703.0000076293945,
+        "y": 1689.4000005722046,
+        "wires": [
+            [
+                "c0b8be4d.da9dc"
+            ]
+        ]
+    },
+    {
+        "id": "718cd76e.343978",
+        "type": "function",
+        "z": "c85f287f.57eba8",
+        "name": "Total",
+        "func": "msg.payload = msg.payload.Total\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 704.0000076293945,
+        "y": 1727.400001525879,
+        "wires": [
+            [
+                "adf6da8f.886d28"
+            ]
+        ]
+    },
+    {
+        "id": "c7f694c3.8b5958",
+        "type": "function",
+        "z": "c85f287f.57eba8",
+        "name": "mAh",
+        "func": "msg.payload = msg.payload.mAh\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 705.0000076293945,
+        "y": 1763.4000024795532,
+        "wires": [
+            [
+                "f8bd72d7.76f68"
+            ]
+        ]
+    },
+    {
+        "id": "bd580107.a6227",
+        "type": "function",
+        "z": "c85f287f.57eba8",
+        "name": "Bat",
+        "func": "msg.payload = msg.payload.Bat\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 704.0000076293945,
+        "y": 1801.200002670288,
+        "wires": [
+            [
+                "610024ef.e1358c"
+            ]
+        ]
+    },
+    {
+        "id": "60ac2748.f101f8",
+        "type": "function",
+        "z": "c85f287f.57eba8",
+        "name": "LED",
+        "func": "if (msg.payload.LED == 1){\n    msg.payload = \"AN\";\n}else{\n    msg.payload = \"AUS\";\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 704.0000076293945,
+        "y": 1838.2000045776367,
+        "wires": [
+            [
+                "72c0c0a3.4e99b"
+            ]
+        ]
+    },
+    {
+        "id": "9f24a76b.603ea8",
+        "type": "switch",
+        "z": "c85f287f.57eba8",
+        "name": "",
+        "property": "payload.SNR",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "AB118491",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "AB124174",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 461.6000442504883,
+        "y": 1863.4000492095947,
+        "wires": [
+            [
+                "4dfa69df.e93c48",
+                "63813df3.968a54",
+                "b0369eda.c3fa8",
+                "7872a65d.ac97f8",
+                "718cd76e.343978",
+                "c7f694c3.8b5958",
+                "bd580107.a6227",
+                "60ac2748.f101f8",
+                "50275ab8.2aed74"
+            ],
+            [
+                "2edadcf0.cdaf44",
+                "d87799a7.fb0878",
+                "e3d0c22b.18274",
+                "e0f53bb6.c40668",
+                "998c9335.b9497",
+                "4e816fc.1e1da9",
+                "1954bf09.479421",
+                "6a9a79d2.0f23f8",
+                "c93cff01.899f2"
+            ]
+        ]
+    },
+    {
+        "id": "2faff7ac.8761a8",
+        "type": "ui_text",
+        "z": "c85f287f.57eba8",
+        "group": "6a9932d.ad017cc",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "SNR:",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "x": 863.6000595092773,
+        "y": 1575.3874988555908,
+        "wires": []
+    },
+    {
+        "id": "c83c1326.08c0e",
+        "type": "ui_text",
+        "z": "c85f287f.57eba8",
+        "group": "6a9932d.ad017cc",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Lock Status:",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "x": 881.6000366210938,
+        "y": 1613.999984741211,
+        "wires": []
+    },
+    {
+        "id": "cd3070f3.ff8b1",
+        "type": "ui_text",
+        "z": "c85f287f.57eba8",
+        "group": "6a9932d.ad017cc",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Speed:",
+        "format": "{{msg.payload}} km/h",
+        "layout": "row-spread",
+        "x": 873.6000366210938,
+        "y": 1651.999984741211,
+        "wires": []
+    },
+    {
+        "id": "c0b8be4d.da9dc",
+        "type": "ui_text",
+        "z": "c85f287f.57eba8",
+        "group": "6a9932d.ad017cc",
+        "order": 5,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Trip:",
+        "format": "{{msg.payload}} km",
+        "layout": "row-spread",
+        "x": 863.6000366210938,
+        "y": 1688.9999694824219,
+        "wires": []
+    },
+    {
+        "id": "adf6da8f.886d28",
+        "type": "ui_text",
+        "z": "c85f287f.57eba8",
+        "group": "6a9932d.ad017cc",
+        "order": 6,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Total: ",
+        "format": "{{msg.payload}} km",
+        "layout": "row-spread",
+        "x": 864.6000366210938,
+        "y": 1726.9999694824219,
+        "wires": []
+    },
+    {
+        "id": "f8bd72d7.76f68",
+        "type": "ui_text",
+        "z": "c85f287f.57eba8",
+        "group": "6a9932d.ad017cc",
+        "order": 7,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Verbrauch: ",
+        "format": "{{msg.payload}} mAh",
+        "layout": "row-spread",
+        "x": 886.600061416626,
+        "y": 1763.0000019073486,
+        "wires": []
+    },
+    {
+        "id": "610024ef.e1358c",
+        "type": "ui_gauge",
+        "z": "c85f287f.57eba8",
+        "name": "",
+        "group": "6a9932d.ad017cc",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Battery",
+        "label": "units",
+        "format": "{{value}} %",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#ca3838",
+            "#e6e600",
+            "#009700"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "x": 876.6000366210938,
+        "y": 1800.9999694824219,
+        "wires": []
+    },
+    {
+        "id": "72c0c0a3.4e99b",
+        "type": "ui_text",
+        "z": "c85f287f.57eba8",
+        "group": "6a9932d.ad017cc",
+        "order": 8,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Front LED: ",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "x": 887.6000595092773,
+        "y": 1838.0000019073486,
+        "wires": []
+    },
+    {
+        "id": "2edadcf0.cdaf44",
+        "type": "function",
+        "z": "c85f287f.57eba8",
+        "name": "SNR",
+        "func": "msg.payload = msg.payload.SNR\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 708,
+        "y": 1950,
+        "wires": [
+            [
+                "75baab52.d1e324"
+            ]
+        ]
+    },
+    {
+        "id": "d87799a7.fb0878",
+        "type": "function",
+        "z": "c85f287f.57eba8",
+        "name": "Lock",
+        "func": "if (msg.payload.Lock == 1){\n    msg.payload = \"Locked\";\n}else{\n    msg.payload = \"Unlocked\";\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 709.3999519348145,
+        "y": 1988.9999523162842,
+        "wires": [
+            [
+                "1ccda3e.d64185c"
+            ]
+        ]
+    },
+    {
+        "id": "e3d0c22b.18274",
+        "type": "function",
+        "z": "c85f287f.57eba8",
+        "name": "Speed",
+        "func": "msg.payload = msg.payload.Speed\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 708.3999519348145,
+        "y": 2026.9999532699585,
+        "wires": [
+            [
+                "9b80cfc.92d743"
+            ]
+        ]
+    },
+    {
+        "id": "e0f53bb6.c40668",
+        "type": "function",
+        "z": "c85f287f.57eba8",
+        "name": "Trip",
+        "func": "msg.payload = msg.payload.Trip\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 710.3999519348145,
+        "y": 2063.9999532699585,
+        "wires": [
+            [
+                "3ecaac6e.3e3274"
+            ]
+        ]
+    },
+    {
+        "id": "998c9335.b9497",
+        "type": "function",
+        "z": "c85f287f.57eba8",
+        "name": "Total",
+        "func": "msg.payload = msg.payload.Total\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 711.3999519348145,
+        "y": 2101.999954223633,
+        "wires": [
+            [
+                "fe7e9f92.19cac"
+            ]
+        ]
+    },
+    {
+        "id": "4e816fc.1e1da9",
+        "type": "function",
+        "z": "c85f287f.57eba8",
+        "name": "mAh",
+        "func": "msg.payload = msg.payload.mAh\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 712.3999519348145,
+        "y": 2137.999955177307,
+        "wires": [
+            [
+                "be337cfd.502b4"
+            ]
+        ]
+    },
+    {
+        "id": "1954bf09.479421",
+        "type": "function",
+        "z": "c85f287f.57eba8",
+        "name": "Bat",
+        "func": "msg.payload = msg.payload.Bat\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 711.3999519348145,
+        "y": 2175.799955368042,
+        "wires": [
+            [
+                "192a3eb3.b6d161"
+            ]
+        ]
+    },
+    {
+        "id": "6a9a79d2.0f23f8",
+        "type": "function",
+        "z": "c85f287f.57eba8",
+        "name": "LED",
+        "func": "if (msg.payload.LED == 1){\n    msg.payload = \"AN\";\n}else{\n    msg.payload = \"AUS\";\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 711.3999519348145,
+        "y": 2212.7999572753906,
+        "wires": [
+            [
+                "577935e1.68cf0c"
+            ]
+        ]
+    },
+    {
+        "id": "75baab52.d1e324",
+        "type": "ui_text",
+        "z": "c85f287f.57eba8",
+        "group": "ec03c028.d0581",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "SNR:",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "x": 871.0000038146973,
+        "y": 1949.9874515533447,
+        "wires": []
+    },
+    {
+        "id": "1ccda3e.d64185c",
+        "type": "ui_text",
+        "z": "c85f287f.57eba8",
+        "group": "ec03c028.d0581",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Lock Status:",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "x": 888.9999809265137,
+        "y": 1988.5999374389648,
+        "wires": []
+    },
+    {
+        "id": "9b80cfc.92d743",
+        "type": "ui_text",
+        "z": "c85f287f.57eba8",
+        "group": "ec03c028.d0581",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Speed:",
+        "format": "{{msg.payload}} km/h",
+        "layout": "row-spread",
+        "x": 880.9999809265137,
+        "y": 2026.5999374389648,
+        "wires": []
+    },
+    {
+        "id": "3ecaac6e.3e3274",
+        "type": "ui_text",
+        "z": "c85f287f.57eba8",
+        "group": "ec03c028.d0581",
+        "order": 5,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Trip:",
+        "format": "{{msg.payload}} km",
+        "layout": "row-spread",
+        "x": 870.9999809265137,
+        "y": 2063.599922180176,
+        "wires": []
+    },
+    {
+        "id": "fe7e9f92.19cac",
+        "type": "ui_text",
+        "z": "c85f287f.57eba8",
+        "group": "ec03c028.d0581",
+        "order": 6,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Total: ",
+        "format": "{{msg.payload}} km",
+        "layout": "row-spread",
+        "x": 871.9999809265137,
+        "y": 2101.599922180176,
+        "wires": []
+    },
+    {
+        "id": "be337cfd.502b4",
+        "type": "ui_text",
+        "z": "c85f287f.57eba8",
+        "group": "ec03c028.d0581",
+        "order": 7,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Verbrauch: ",
+        "format": "{{msg.payload}} mAh",
+        "layout": "row-spread",
+        "x": 894.0000057220459,
+        "y": 2137.5999546051025,
+        "wires": []
+    },
+    {
+        "id": "192a3eb3.b6d161",
+        "type": "ui_gauge",
+        "z": "c85f287f.57eba8",
+        "name": "",
+        "group": "ec03c028.d0581",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Battery",
+        "label": "units",
+        "format": "{{value}} %",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#ca3838",
+            "#e6e600",
+            "#009700"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "x": 883.9999809265137,
+        "y": 2175.599922180176,
+        "wires": []
+    },
+    {
+        "id": "577935e1.68cf0c",
+        "type": "ui_text",
+        "z": "c85f287f.57eba8",
+        "group": "ec03c028.d0581",
+        "order": 8,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Front LED: ",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "x": 895.0000038146973,
+        "y": 2212.5999546051025,
+        "wires": []
+    },
+    {
+        "id": "23b25a0f.2e91f6",
+        "type": "ui_text",
+        "z": "c85f287f.57eba8",
+        "group": "6a9932d.ad017cc",
+        "order": 9,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Last Event: ",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "x": 1170.00004196167,
+        "y": 1880.0002508163452,
+        "wires": []
+    },
+    {
+        "id": "50275ab8.2aed74",
+        "type": "change",
+        "z": "c85f287f.57eba8",
+        "name": "DATE & TIME",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "$now()",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 735.8330764770508,
+        "y": 1880.166862487793,
+        "wires": [
+            [
+                "bfb3a398.8d825"
+            ]
+        ]
+    },
+    {
+        "id": "bfb3a398.8d825",
+        "type": "moment",
+        "z": "c85f287f.57eba8",
+        "name": "",
+        "topic": "",
+        "input": "payload",
+        "inputType": "msg",
+        "inTz": "Europe/London",
+        "adjAmount": 0,
+        "adjType": "days",
+        "adjDir": "add",
+        "format": "LLL",
+        "locale": "en_GB",
+        "output": "payload",
+        "outputType": "msg",
+        "outTz": "Europe/Berlin",
+        "x": 952.2948303222656,
+        "y": 1880.1773204803467,
+        "wires": [
+            [
+                "23b25a0f.2e91f6"
+            ]
+        ]
+    },
+    {
+        "id": "cddb01cf.e61da",
+        "type": "ui_text",
+        "z": "c85f287f.57eba8",
+        "group": "ec03c028.d0581",
+        "order": 9,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Last Event: ",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "x": 1178,
+        "y": 2258,
+        "wires": []
+    },
+    {
+        "id": "c93cff01.899f2",
+        "type": "change",
+        "z": "c85f287f.57eba8",
+        "name": "DATE & TIME",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "$now()",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 743.8330345153809,
+        "y": 2258.1666116714478,
+        "wires": [
+            [
+                "7a7592fd.aa674c"
+            ]
+        ]
+    },
+    {
+        "id": "7a7592fd.aa674c",
+        "type": "moment",
+        "z": "c85f287f.57eba8",
+        "name": "",
+        "topic": "",
+        "input": "payload",
+        "inputType": "msg",
+        "inTz": "Europe/London",
+        "adjAmount": 0,
+        "adjType": "days",
+        "adjDir": "add",
+        "format": "LLL",
+        "locale": "en_GB",
+        "output": "payload",
+        "outputType": "msg",
+        "outTz": "Europe/Berlin",
+        "x": 960.2947883605957,
+        "y": 2258.1770696640015,
+        "wires": [
+            [
+                "cddb01cf.e61da"
+            ]
+        ]
+    },
+    {
+        "id": "ebfbd387.5674b",
+        "type": "debug",
+        "z": "c85f287f.57eba8",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 737.5000114440918,
+        "y": 2316.5000534057617,
+        "wires": []
+    },
+    {
+        "id": "d7a9433d.ac072",
+        "type": "mqtt-broker",
+        "z": "",
+        "name": "Test",
+        "broker": "localhost",
+        "port": "1883",
+        "clientid": "",
+        "usetls": false,
+        "compatmode": true,
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": ""
+    },
+    {
+        "id": "6a9932d.ad017cc",
+        "type": "ui_group",
+        "z": "",
+        "name": "myTIER #1",
+        "tab": "f8917f4b.8a48d",
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "ec03c028.d0581",
+        "type": "ui_group",
+        "z": "",
+        "name": "myTIER #2",
+        "tab": "f8917f4b.8a48d",
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "f8917f4b.8a48d",
+        "type": "ui_tab",
+        "z": "",
+        "name": "Basement",
+        "icon": "dashboard",
+        "order": 2,
+        "disabled": false,
+        "hidden": false
+    }
+]
