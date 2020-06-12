@@ -2,8 +2,8 @@
 //#include "BLEScan.h"
 #include <odroid_go.h>
 
-static String BTPASSWD = "xxxxxx";    //Das Bluetooth-Passwort, welches bei den Kommandos mitgesendet wird
-#define MyTier "XX:XX:XX:XX:XX:XX"        //Bluetooth-Adresse des Scooters, diese mit einem Bluetooth LE Scanner herausfinden und hier rein
+static String BTPASSWD = "pw";    //Das Bluetooth-Passwort, welches bei den Kommandos mitgesendet wird
+#define MyTier "mac_adresse"        //Bluetooth-Adresse des Scooters, diese mit einem Bluetooth LE Scanner herausfinden und hier rein
 
 static BLEUUID serviceUUID("00002c00-0000-1000-8000-00805f9b34fb"); //Service des Tier-Scooters
 static BLEUUID    charUUID("00002c10-0000-1000-8000-00805f9b34fb"); //Charakteristik.. Hier landen die Befehle.
@@ -50,10 +50,10 @@ static void notifyCallback( //Notifications vom Characteristic
       GO.lcd.printf("Sperre: %s\n",(LockStatus) ? "Ein": "Aus" );
       GO.lcd.printf("Tacho: %.1f km/h\n",Speed);
       GO.lcd.printf("Trip: %.2f km\n",TripDistance);
-      GO.lcd.printf("Trip Gesamt: %.1f km\n",TripTotal);
+      GO.lcd.printf("\\ Ges.: %.1f km\n",TripTotal);
       GO.lcd.printf("Unbekannt: %d\n",OddCounter );
-      GO.lcd.printf("Batterie: %d %\n",Battery);
-      GO.lcd.printf("Frontleuchte: %s\n",(Headlight)? "Ein": "Aus");
+      GO.lcd.printf("Batterie: %d %%\n",Battery);
+      GO.lcd.printf("Leuchte: %s\n",(Headlight)? "Ein": "Aus");
       rcvStatus = false;
     }else{
       if(cmd.substring(5,10) == "BKINF"){
@@ -119,10 +119,11 @@ bool connectToServer() {
 
 void setup() {
   GO.begin();
-  GO.lcd.setTextSize(2);
+  GO.Speaker.setVolume(11);
+  GO.lcd.setTextSize(3);
   GO.lcd.clear();
   GO.lcd.setCursor(0, 0);
-  GO.lcd.println("Highwind v 0.1");   //FF7-Fans hier? :)
+  GO.lcd.println("Highwind v 0.2");   //FF7-Fans hier? :)
   BLEDevice::init("");
   doConnect = true;
 
@@ -148,26 +149,42 @@ void loop() {
     String newValue2;
 //    String cmd;
     GO.update();  //Registriert Tastendrücke..
-    if(GO.BtnA.isPressed() && (GO.JOY_Y.isAxisPressed() == 2)){  //Joy up (Entsperren)
+    if(GO.BtnA.wasPressed() && (GO.JOY_Y.isAxisPressed() == 2)){  //Joy up (Entsperren)
        newValue1 = "AT+BKSCT=" + BTPASSWD +",";
        newValue2 = "0$\r\n";
+ /*      GO.Speaker.tone(300,50);
+       delay(50);
+       GO.Speaker.tone(400,50);
+       delay(50);
+       GO.Speaker.tone(600,50);
+       delay(50);*/
 //       cmd = "Entsperren!";
-    }else if(GO.BtnA.isPressed() && (GO.JOY_Y.isAxisPressed() == 1)){ //Joy down (Sperren)
+    }else if(GO.BtnA.wasPressed() && (GO.JOY_Y.isAxisPressed() == 1)){ //Joy down (Sperren)
        newValue1 = "AT+BKSCT=" + BTPASSWD +",";
        newValue2 = "1$\r\n";
+ /*      GO.Speaker.tone(600,50);
+       delay(50);
+       GO.Speaker.tone(400,50);
+       delay(50);
+       GO.Speaker.tone(300,50);
+       delay(50);*/
 //       cmd = "Sperren!";
-    }else if(GO.BtnA.isPressed() && (GO.JOY_X.isAxisPressed() == 2)){ //Joy left (Licht an)
+    }else if(GO.BtnA.wasPressed() && (GO.JOY_X.isAxisPressed() == 2)){ //Joy left (Licht an)
        newValue1 = "AT+BKLED=" + BTPASSWD +",";
        newValue2 = "0,1$\r\n";
 //       cmd = "Licht an!";
-    }else if(GO.BtnA.isPressed() && (GO.JOY_X.isAxisPressed() == 1)){ //joy right (Licht aus)
+    }else if(GO.BtnA.wasPressed() && (GO.JOY_X.isAxisPressed() == 1)){ //joy right (Licht aus)
        newValue1 = "AT+BKLED=" + BTPASSWD +",";
        newValue2 = "0,0$\r\n";
 //       cmd = "Licht aus!";
-    }else if(GO.BtnB.isPressed() && (GO.JOY_X.isAxisPressed() == 1)){ //Ich lass dies hier drin um zu testen..
+    }else if(GO.BtnB.wasPressed() && (GO.JOY_X.isAxisPressed() == 1)){ //Ich lass dies hier drin um zu testen..
        newValue1 = "AT+BKLED=" + BTPASSWD +",";
        newValue2 = "1,1$\r\n";
 //       cmd = "TEST COMMAND";
+    }else if(GO.BtnStart.wasPressed()){
+        GO.lcd.invertDisplay(1);
+    }else if(GO.BtnSelect.wasPressed()){
+        GO.lcd.invertDisplay(0);
     }else{
        newValue1 = "AT+BKINF=" + BTPASSWD +",";
        newValue2 = "0$\r\n";
