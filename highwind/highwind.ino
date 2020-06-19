@@ -179,7 +179,7 @@ void loop() {
 //       cmd = "Licht aus!";
     }else if(GO.BtnB.wasPressed() && (GO.JOY_X.isAxisPressed() == 1)){ //Ich lass dies hier drin um zu testen..
        newValue1 = "AT+BKLED=" + BTPASSWD +",";
-       newValue2 = "1,1$\r\n";
+       newValue2 = "0,1$\r\n";
 //       cmd = "TEST COMMAND";
     }else if(GO.BtnStart.wasPressed()){
         GO.lcd.invertDisplay(1);
