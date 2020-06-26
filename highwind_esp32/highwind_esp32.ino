@@ -60,7 +60,7 @@ void sendCommand(int pin){
       break;
       case 27:   //Licht aus
        newValue1 = "AT+BKLED=" + BTPASSWD +",";
-       newValue2 = "1,1$\r\n";
+       newValue2 = "0,0$\r\n";
       break;
       default:    //Infos holen. Mein ESP hat manchman geglitcht und die GPIO Nummer 2673089463 oder so zurückgegeben.
        newValue1 = "AT+BKINF=" + BTPASSWD +",";
