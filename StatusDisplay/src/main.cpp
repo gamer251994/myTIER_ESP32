@@ -6,6 +6,7 @@
 #include <HTTPClient.h>
 #include <Adafruit_GFX.h>
 #include <Wire.h>
+#include <TimeLib.h>
 #include "board_def.h"
 #include "info.h"
 #include "images.h"
@@ -153,7 +154,7 @@ const unsigned char* setWeatherIcon(String icon)
 
     //weatherdata
     String icon = openWeatherMap.getIcon();
-    displayText("Today", 20, LEFT_ALIGNMENT);
+    displayText("Today "+ String(day(date))+"."+ String(month(date))+"."+String(year(date)), 20, LEFT_ALIGNMENT);
     displayText(String(openWeatherMap.getTempMax())+"  C", 40, LEFT_ALIGNMENT);
     //write °C Logo
     display.fillCircle(51, 30, 2, GxEPD_BLACK);  //Xpos,Ypos,r,color
